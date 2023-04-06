@@ -1,10 +1,7 @@
-use elo_rs::{Loss, Player, Ratings};
+use elo_rs::{Loss, Ratings};
 
 fn main() {
-	let mut rating = Ratings::new(vec![
-		Player::new(123.),
-		Player::new(456.),
-	]);
+	let mut rating = Ratings::new(vec![123.into(), 456.into()]);
 
 	rating.r#match(0, 1, Loss).unwrap();
 

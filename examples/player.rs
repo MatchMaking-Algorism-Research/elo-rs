@@ -1,7 +1,7 @@
 use elo_rs::{Loss, Player};
 
 fn main() {
-	let mut player = Player::new(123.);
+	let mut player = Player::from(123);
 
 	player.update_rating(456., Loss);
 
