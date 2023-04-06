@@ -1,4 +1,4 @@
-use std::ops::{Mul, Sub};
+use std::ops::{Mul, Not, Sub};
 
 pub enum Outcome {
 	Win,
@@ -31,6 +31,19 @@ impl Mul<f64> for Outcome {
 }
 
 fn delta(s: f64, e: f64, k: f64) -> f64 { k * (s - e) }
+impl Not for Outcome {
+	type Output = f64;
+
+	#[inline]
+	fn not(self) -> Self::Output {
+		// 1. - f64::from(self)
+		match self {
+			Outcome::Draw => 0.5,
+			Outcome::Win => 0.,
+			Outcome::Loss => 1.,
+		}
+	}
+}
 
 fn ex(ra: f64, rb: f64) -> (f64, f64) {
 	let ea = 1. / (1. + 10f64.powf((rb - ra) / 400.));
