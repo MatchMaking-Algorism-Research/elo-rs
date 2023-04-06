@@ -31,7 +31,6 @@ impl Mul<f64> for Outcome {
 	fn mul(self, rhs: f64) -> Self::Output { f64::from(self) * rhs }
 }
 
-fn delta(s: f64, e: f64, k: f64) -> f64 { k * (s - e) }
 impl Not for Outcome {
 	type Output = Self;
 
@@ -46,13 +45,15 @@ impl Not for Outcome {
 	}
 }
 
+fn delta(s: Outcome, e: f64, k: f64) -> f64 { k * (s - e) }
+
 fn ex(ra: f64, rb: f64) -> (f64, f64) {
 	let ea = 1. / (1. + 10f64.powf((rb - ra) / 400.));
 
 	(ea, 1. - ea)
 }
 
-pub fn elo(ra: f64, rb: f64, sa: f64, sb: f64, k: f64) -> (f64, f64) {
+pub fn elo(ra: f64, rb: f64, sa: Outcome, sb: Outcome, k: f64) -> (f64, f64) {
 	let (ea, eb) = ex(ra, rb);
 
 	(
@@ -68,8 +69,8 @@ impl Player {
 
 	pub fn rating(&self) -> f64 { self.0 }
 
-	pub fn update_rating(&mut self, rb: f64, sa: f64, k: f64) {
-		self.0 = elo(self.0, rb, sa, 1.0 - sa, k).0
+	pub fn update_rating(&mut self, rb: f64, sa: Outcome, k: f64) {
+		self.0 = elo(self.0, rb, sa, !sa, k).0
 	}
 }
 
@@ -87,7 +88,7 @@ impl Ratings {
 		&mut self,
 		a: usize,
 		b: usize,
-		result: f64,
+		result: Outcome,
 	) -> Result<(), ()> {
 		if a == b {
 			return Err(());
@@ -105,7 +106,7 @@ impl Ratings {
 		unsafe {
 			let (ar, br) = ((*a).rating(), (*b).rating());
 			(*a).update_rating(br, result, self.k);
-			(*b).update_rating(ar, 1. - result, self.k);
+			(*b).update_rating(ar, !result, self.k);
 		}
 		Ok(())
 	}
