@@ -1,15 +1,13 @@
 use crate::Outcome;
 
 #[inline]
-pub(crate) fn delta(s: Outcome, e: f64, k: f64) -> f64 { k * (s - e) }
+fn delta(s: Outcome, e: f64, k: f64) -> f64 { k * (s - e) }
 
 #[inline]
-pub(crate) fn exa(ra: f64, rb: f64) -> f64 {
-	1. / (1. + 10f64.powf((rb - ra) / 400.))
-}
+fn exa(ra: f64, rb: f64) -> f64 { 1. / (1. + 10f64.powf((rb - ra) / 400.)) }
 
 #[inline]
-pub(crate) fn ex(ra: f64, rb: f64) -> (f64, f64) {
+fn ex(ra: f64, rb: f64) -> (f64, f64) {
 	let ea = exa(ra, rb);
 
 	(ea, 1. - ea)
