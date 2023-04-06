@@ -12,7 +12,7 @@ impl Player {
 	pub fn rating(&self) -> f64 { self.0 }
 
 	pub fn update_rating(&mut self, rb: f64, sa: Outcome, k: f64) {
-		self.0 = elo(self.0, rb, sa, k).0
+		self.0 = elo_a(self.0, rb, sa, k)
 	}
 
 	fn set_rating(&mut self, new_rateing: f64) { self.0 = new_rateing; }
