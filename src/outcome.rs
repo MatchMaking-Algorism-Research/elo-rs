@@ -1,6 +1,6 @@
 use std::ops::{Mul, Not, Sub};
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Outcome {
 	Win,
 	Draw,
