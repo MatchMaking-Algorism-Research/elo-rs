@@ -105,3 +105,14 @@ impl Ratings {
 impl From<Ratings> for Vec<Player> {
 	fn from(value: Ratings) -> Self { value.players }
 }
+
+impl From<Vec<f64>> for Ratings {
+	fn from(value: Vec<f64>) -> Self {
+		Self::new(
+			value
+				.into_iter()
+				.map(Player::new)
+				.collect(),
+		)
+	}
+}
