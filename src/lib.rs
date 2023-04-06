@@ -48,8 +48,6 @@ impl Ratings {
 		Self { players, k }
 	}
 
-	pub fn into_vec(self) -> Vec<Player> { self.players }
-
 	pub fn r#match(
 		&mut self,
 		a: usize,
@@ -82,4 +80,8 @@ impl Ratings {
 		(*a).set_rating(ar_new);
 		(*b).set_rating(br_new);
 	}
+}
+
+impl From<Ratings> for Vec<Player> {
+	fn from(value: Ratings) -> Self { value.players }
 }
