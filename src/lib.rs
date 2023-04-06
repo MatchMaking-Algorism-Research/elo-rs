@@ -1,3 +1,4 @@
+mod algorithm;
 mod outcome;
 
 pub use outcome::*;
@@ -29,6 +30,8 @@ impl Player {
 	pub fn update_rating(&mut self, rb: f64, sa: Outcome, k: f64) {
 		self.0 = elo(self.0, rb, sa, k).0
 	}
+
+	fn set_rating(&mut self, new_rateing: f64) { self.0 = new_rateing; }
 }
 
 pub struct Ratings {
@@ -62,8 +65,9 @@ impl Ratings {
 		};
 		unsafe {
 			let (ar, br) = ((*a).rating(), (*b).rating());
-			(*a).update_rating(br, result, self.k);
-			(*b).update_rating(ar, !result, self.k);
+			let (ra, rb) = elo(ar, br, result, self.k);
+			(*a).set_rating(ra);
+			(*b).set_rating(rb);
 		}
 		Ok(())
 	}
