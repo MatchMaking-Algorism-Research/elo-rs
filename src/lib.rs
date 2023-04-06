@@ -11,7 +11,11 @@ impl Player {
 
 	pub fn rating(&self) -> f64 { self.0 }
 
-	pub fn update_rating(
+	pub fn update_rating(&mut self, opponent_rating: f64, outcome: Outcome) {
+		self.update_rating_with_k(opponent_rating, outcome, K)
+	}
+
+	pub fn update_rating_with_k(
 		&mut self,
 		opponent_rating: f64,
 		outcome: Outcome,
