@@ -57,6 +57,17 @@ impl Ratings {
 		Self { players, k }
 	}
 
+	pub fn fill(starting_rate: f64, length: usize) -> Self {
+		Self::fill_with_k(starting_rate, length, K)
+	}
+
+	pub fn fill_with_k(starting_rate: f64, length: usize, k: f64) -> Self {
+		Self::new_with_k(
+			vec![Player::new(starting_rate); length],
+			k,
+		)
+	}
+
 	pub fn r#match(
 		&mut self,
 		a: usize,
