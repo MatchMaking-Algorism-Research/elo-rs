@@ -37,6 +37,19 @@ impl Mul<f64> for Outcome {
 impl Not for Outcome {
 	type Output = Self;
 
+	/// inverse the Outcome.
+	///
+	/// Example:
+	///
+	/// ```
+	/// # use elo_rs::*;
+	/// let res = Loss;
+	/// assert_eq!(!res, Win);
+	///
+	/// assert_eq!(!Win, Loss);
+	/// assert_eq!(!Draw, Draw);
+	/// assert_eq!(!!Win, Win);
+	/// ```
 	#[inline]
 	fn not(self) -> Self::Output {
 		// 1. - f64::from(self)
