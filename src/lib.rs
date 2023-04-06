@@ -33,7 +33,11 @@ pub struct Ratings {
 }
 
 impl Ratings {
-	pub fn new(players: Vec<Player>, k: f64) -> Self { Self { players, k } }
+	pub fn new(players: Vec<Player>) -> Self { Self::new_with_k(players, K) }
+
+	pub fn new_with_k(players: Vec<Player>, k: f64) -> Self {
+		Self { players, k }
+	}
 
 	pub fn into_vec(self) -> Vec<Player> { self.players }
 
