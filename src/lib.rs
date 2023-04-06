@@ -4,6 +4,7 @@ mod outcome;
 pub use algorithm::*;
 pub use outcome::*;
 
+#[derive(Clone, Copy)]
 pub struct Player(f64);
 
 impl Player {
