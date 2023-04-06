@@ -32,6 +32,15 @@ pub struct Ratings {
 	k: f64,
 }
 
+impl Default for Ratings {
+	fn default() -> Self {
+		Self {
+			players: vec![],
+			k: K,
+		}
+	}
+}
+
 impl Ratings {
 	pub fn new(players: Vec<Player>) -> Self { Self::new_with_k(players, K) }
 
