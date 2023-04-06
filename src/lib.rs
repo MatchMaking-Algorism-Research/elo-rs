@@ -32,15 +32,15 @@ impl Mul<f64> for Outcome {
 
 fn delta(s: f64, e: f64, k: f64) -> f64 { k * (s - e) }
 impl Not for Outcome {
-	type Output = f64;
+	type Output = Self;
 
 	#[inline]
 	fn not(self) -> Self::Output {
 		// 1. - f64::from(self)
 		match self {
-			Outcome::Draw => 0.5,
-			Outcome::Win => 0.,
-			Outcome::Loss => 1.,
+			Outcome::Win => Outcome::Loss,
+			Outcome::Draw => Outcome::Draw,
+			Outcome::Loss => Outcome::Win,
 		}
 	}
 }
