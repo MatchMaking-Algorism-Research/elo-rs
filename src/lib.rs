@@ -1,5 +1,3 @@
-use std::ops::{Mul, Not, Sub};
-
 mod outcome;
 
 pub use outcome::*;
