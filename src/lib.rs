@@ -1,4 +1,4 @@
-use std::ops::Mul;
+use std::ops::{Mul, Sub};
 
 pub enum Outcome {
 	Win,
@@ -15,6 +15,12 @@ impl From<Outcome> for f64 {
 			Outcome::Loss => 0.,
 		}
 	}
+}
+
+impl Sub<f64> for Outcome {
+	type Output = f64;
+
+	fn sub(self, rhs: f64) -> Self::Output { f64::from(self) - rhs }
 }
 
 impl Mul<f64> for Outcome {
