@@ -7,13 +7,15 @@ pub enum Outcome {
 	Loss,
 }
 
+pub use Outcome::*;
+
 impl From<Outcome> for f64 {
 	#[inline]
 	fn from(value: Outcome) -> Self {
 		match value {
-			Outcome::Win => 1.,
-			Outcome::Draw => 0.5,
-			Outcome::Loss => 0.,
+			Win => 1.,
+			Draw => 0.5,
+			Loss => 0.,
 		}
 	}
 }
@@ -38,9 +40,9 @@ impl Not for Outcome {
 	fn not(self) -> Self::Output {
 		// 1. - f64::from(self)
 		match self {
-			Outcome::Win => Outcome::Loss,
-			Outcome::Draw => Outcome::Draw,
-			Outcome::Loss => Outcome::Win,
+			Win => Loss,
+			Draw => Draw,
+			Loss => Win,
 		}
 	}
 }
