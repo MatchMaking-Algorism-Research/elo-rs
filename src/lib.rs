@@ -54,7 +54,7 @@ impl Ratings {
 		};
 		unsafe {
 			let (ar, br) = ((*a).rating(), (*b).rating());
-			let (ar_new, br_new) = elo(ar, br, result, self.k);
+			let (ar_new, br_new) = elo_with_k(ar, br, result, self.k);
 			(*a).set_rating(ar_new);
 			(*b).set_rating(br_new);
 		}
