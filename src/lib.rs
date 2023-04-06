@@ -56,25 +56,30 @@ impl Ratings {
 		b: usize,
 		result: Outcome,
 	) -> Result<(), ()> {
-		if a == b {
-			return Err(());
+		if a == b
+			|| self.players.get(a).is_none()
+			|| self.players.get(a).is_none()
+		{
+			Err(())
+		} else {
+			unsafe { self.match_unchecked(a, b, result) };
+			Ok(())
 		}
-		let (Some(a), Some(b)) = (
-			self.players
-				.get_mut(a)
-				.map(|t| t as *mut Player),
-			self.players
-				.get_mut(b)
-				.map(|t| t as *mut Player),
-		) else {
-			return Err(());
-		};
-		unsafe {
-			let (ar, br) = ((*a).rating(), (*b).rating());
-			let (ar_new, br_new) = elo_with_k(ar, br, result, self.k);
-			(*a).set_rating(ar_new);
-			(*b).set_rating(br_new);
-		}
-		Ok(())
+	}
+
+	pub unsafe fn match_unchecked(
+		&mut self,
+		a: usize,
+		b: usize,
+		result: Outcome,
+	) {
+		let (a, b) = (
+			self.players.get_unchecked_mut(a) as *mut Player,
+			self.players.get_unchecked_mut(b) as *mut Player,
+		);
+		let (ar, br) = ((*a).rating(), (*b).rating());
+		let (ar_new, br_new) = elo_with_k(ar, br, result, self.k);
+		(*a).set_rating(ar_new);
+		(*b).set_rating(br_new);
 	}
 }
