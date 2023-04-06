@@ -8,7 +8,7 @@ fn main() {
 
 	rating.r#match(0, 1, Loss).unwrap();
 
-	let players = rating.into_vec();
+	let players: Vec<_> = rating.into();
 
 	assert_eq!(players[0].rating(), 118.89736249706061);
 	assert_eq!(players[1].rating(), 460.1026375029394);
