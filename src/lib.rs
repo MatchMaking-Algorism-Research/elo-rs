@@ -14,3 +14,15 @@ pub fn elo(ra: f64, rb: f64, sa: f64, sb: f64, k: f64) -> (f64, f64) {
 		rb + delta(sb, eb, k),
 	)
 }
+
+pub struct Player(f64);
+
+impl Player {
+	pub fn new(ra: f64) -> Self { Self(ra) }
+
+	pub fn rating(&self) -> f64 { self.0 }
+
+	pub fn update_rating(&mut self, rb: f64, sa: f64, k: f64) {
+		self.0 = elo(self.0, rb, sa, 1.0 - sa, k).0
+	}
+}
