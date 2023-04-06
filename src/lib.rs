@@ -27,6 +27,14 @@ impl Player {
 	fn set_rating(&mut self, rating: f64) { self.0 = rating; }
 }
 
+impl From<f64> for Player {
+	fn from(value: f64) -> Self { Self::new(value) }
+}
+
+impl From<i32> for Player {
+	fn from(value: i32) -> Self { Self::new(value as f64) }
+}
+
 pub struct Ratings {
 	players: Vec<Player>,
 	k: f64,
