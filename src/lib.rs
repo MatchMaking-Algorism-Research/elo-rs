@@ -1,3 +1,29 @@
+use std::ops::Mul;
+
+pub enum Outcome {
+	Win,
+	Draw,
+	Loss,
+}
+
+impl From<Outcome> for f64 {
+	#[inline]
+	fn from(value: Outcome) -> Self {
+		match value {
+			Outcome::Win => 1.,
+			Outcome::Draw => 0.5,
+			Outcome::Loss => 0.,
+		}
+	}
+}
+
+impl Mul<f64> for Outcome {
+	type Output = f64;
+
+	#[inline]
+	fn mul(self, rhs: f64) -> Self::Output { f64::from(rhs) * rhs }
+}
+
 fn delta(s: f64, e: f64, k: f64) -> f64 { k * (s - e) }
 
 fn ex(ra: f64, rb: f64) -> (f64, f64) {
