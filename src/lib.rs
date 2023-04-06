@@ -10,12 +10,12 @@ fn ex(ra: f64, rb: f64) -> (f64, f64) {
 	(ea, 1. - ea)
 }
 
-pub fn elo(ra: f64, rb: f64, sa: Outcome, sb: Outcome, k: f64) -> (f64, f64) {
+pub fn elo(ra: f64, rb: f64, sa: Outcome, k: f64) -> (f64, f64) {
 	let (ea, eb) = ex(ra, rb);
 
 	(
 		ra + delta(sa, ea, k),
-		rb + delta(sb, eb, k),
+		rb + delta(!sa, eb, k),
 	)
 }
 
@@ -27,7 +27,7 @@ impl Player {
 	pub fn rating(&self) -> f64 { self.0 }
 
 	pub fn update_rating(&mut self, rb: f64, sa: Outcome, k: f64) {
-		self.0 = elo(self.0, rb, sa, !sa, k).0
+		self.0 = elo(self.0, rb, sa, k).0
 	}
 }
 
