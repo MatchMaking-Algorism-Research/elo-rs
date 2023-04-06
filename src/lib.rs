@@ -21,7 +21,7 @@ impl Mul<f64> for Outcome {
 	type Output = f64;
 
 	#[inline]
-	fn mul(self, rhs: f64) -> Self::Output { f64::from(rhs) * rhs }
+	fn mul(self, rhs: f64) -> Self::Output { f64::from(self) * rhs }
 }
 
 fn delta(s: f64, e: f64, k: f64) -> f64 { k * (s - e) }
