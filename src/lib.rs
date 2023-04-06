@@ -57,8 +57,9 @@ impl Ratings {
 			return Err(());
 		};
 		unsafe {
-			(*a).update_rating((*b).rating(), result, self.k);
-			(*b).update_rating((*a).rating(), 1. - result, self.k);
+			let (ar, br) = ((*a).rating(), (*b).rating());
+			(*a).update_rating(br, result, self.k);
+			(*b).update_rating(ar, 1. - result, self.k);
 		}
 		Ok(())
 	}
