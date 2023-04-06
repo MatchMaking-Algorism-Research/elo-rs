@@ -1,11 +1,11 @@
+use std::ops::{Mul, Not, Sub};
+
 #[derive(Clone, Copy)]
 pub enum Outcome {
 	Win,
 	Draw,
 	Loss,
 }
-
-use std::ops::{Mul, Not, Sub};
 
 pub use Outcome::*;
 
@@ -23,6 +23,7 @@ impl From<Outcome> for f64 {
 impl Sub<f64> for Outcome {
 	type Output = f64;
 
+	#[inline]
 	fn sub(self, rhs: f64) -> Self::Output { f64::from(self) - rhs }
 }
 
