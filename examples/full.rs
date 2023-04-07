@@ -8,6 +8,7 @@ use plotters::{
 use rand::{seq::index::sample, thread_rng, Rng};
 
 const N: usize = 1000;
+const START_RATING: f64 = 100.;
 
 #[derive(Debug)]
 struct P {
@@ -41,12 +42,12 @@ impl IPlayer for P {
 	fn update(&mut self, rating: f64) { self.rating = rating }
 }
 
-fn main() {
+fn main() -> anyhow::Result<()> {
 	let mut rng = thread_rng();
 
 	let mut ratings = Ratings::new(
 		repeat_with(|| rng.gen())
-			.map(|wp| P::new(100., wp))
+			.map(|wp| P::new(START_RATING, wp))
 			.take(N)
 			.collect::<Vec<_>>(),
 	);
@@ -72,16 +73,18 @@ fn main() {
 				ratings.as_slice(),
 				&format!("iter = {i}"),
 				format!("plots/p-{i}.png"),
-			);
+			)?;
 		}
 	}
+
+	Ok(())
 }
 
-fn draw<Ap>(v: &[P], title: &str, f: Ap)
+fn draw<Ap>(v: &[P], title: &str, f: Ap) -> anyhow::Result<()>
 where Ap: AsRef<Path> {
 	let root = BitMapBackend::new(f.as_ref(), (1024, 1024)).into_drawing_area();
 
-	root.fill(&WHITE).unwrap();
+	root.fill(&WHITE)?;
 
 	let it = v.iter().map(|p| p.rating());
 	let r_mx = it.clone().fold(NAN, f64::max);
@@ -92,23 +95,21 @@ where Ap: AsRef<Path> {
 		.margin(15)
 		.x_label_area_size(45)
 		.y_label_area_size(60)
-		.build_cartesian_2d(0f64..1f64, r_mi..r_mx)
-		.unwrap();
+		.build_cartesian_2d(0f64..1f64, r_mi..r_mx)?;
 	chart
 		.configure_mesh()
 		.x_desc("Winning Probability")
 		.y_desc("Elo rating")
 		.axis_desc_style(("sans-serif", 25).into_font())
 		.max_light_lines(4)
-		.draw()
-		.unwrap();
-	chart
-		.draw_series(
-			v.into_iter()
-				.map(|p| (p.winning_percentage, p.rating()))
-				.map(|(x, y)| Circle::new((x, y), 5, PURPLE.filled())),
-		)
-		.unwrap();
+		.draw()?;
+	chart.draw_series(
+		v.into_iter()
+			.map(|p| (p.winning_percentage, p.rating()))
+			.map(|(x, y)| Circle::new((x, y), 5, PURPLE.filled())),
+	)?;
 
-	root.present().unwrap();
+	root.present()?;
+
+	Ok(())
 }

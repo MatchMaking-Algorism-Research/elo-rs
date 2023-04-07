@@ -10,3 +10,4 @@ edition = "2021"
 [dev-dependencies]
 rand = "0.8.5"
 plotters = "0.3.4"
+anyhow = "1.0.70"
