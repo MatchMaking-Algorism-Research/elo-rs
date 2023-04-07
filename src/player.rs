@@ -1,3 +1,4 @@
+//! A Player that holds its own rating at the time.
 use crate::{elo_a, Outcome, K};
 
 /// Single scala value that represents rating of a player

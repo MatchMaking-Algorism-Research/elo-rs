@@ -1,3 +1,4 @@
+//! Result of each game.
 use std::ops::{Mul, Not, Sub};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]

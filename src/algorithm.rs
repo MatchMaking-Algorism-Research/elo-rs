@@ -1,3 +1,4 @@
+//! Core algorithm implementation for Elo rating.
 use crate::Outcome;
 
 pub(crate) const K: f64 = 32.;
