@@ -22,6 +22,10 @@ impl<T: IPlayer> Ratings<T> {
 
 	pub fn as_slice(&self) -> &[T] { &self.players }
 
+	pub fn get(&self, idx: usize) -> Option<&T> { self.players.get(idx) }
+
+	pub unsafe fn get_unchecked(&self, idx: usize) -> &T { &self.players[idx] }
+
 	pub fn r#match(
 		&mut self,
 		a: usize,
