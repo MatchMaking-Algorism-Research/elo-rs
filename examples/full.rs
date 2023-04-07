@@ -1,9 +1,13 @@
-use std::iter::repeat_with;
+use std::{f64::NAN, iter::repeat_with, path::Path};
 
 use elo_rs::{Draw, IPlayer, Loss, Outcome, Ratings, Win};
+use plotters::{
+	prelude::{BitMapBackend, ChartBuilder, Circle, IntoDrawingArea},
+	style::{full_palette::PURPLE, Color, IntoFont, WHITE},
+};
 use rand::{seq::index::sample, thread_rng, Rng};
 
-const N: usize = 100;
+const N: usize = 1000;
 
 #[derive(Debug)]
 struct P {
@@ -47,7 +51,7 @@ fn main() {
 			.collect::<Vec<_>>(),
 	);
 
-	for _ in 0..=1000 {
+	for i in 0..=100000 {
 		let idv = sample(&mut rng, N, 2);
 		let (ai, bi) = (idv.index(0), idv.index(1));
 
@@ -62,7 +66,49 @@ fn main() {
 				),
 			);
 		}
-	}
 
-	println!("{:?}", Vec::from(ratings));
+		if matches!(i, 0 | 2000 | 10000 | 100000) {
+			draw(
+				ratings.as_slice(),
+				&format!("iter = {i}"),
+				format!("plots/p-{i}.png"),
+			);
+		}
+	}
+}
+
+fn draw<Ap>(v: &[P], title: &str, f: Ap)
+where Ap: AsRef<Path> {
+	let root = BitMapBackend::new(f.as_ref(), (1024, 1024)).into_drawing_area();
+
+	root.fill(&WHITE).unwrap();
+
+	let it = v.iter().map(|p| p.rating());
+	let r_mx = it.clone().fold(NAN, f64::max);
+	let r_mi = it.fold(NAN, f64::min);
+
+	let mut chart = ChartBuilder::on(&root)
+		.caption(title, ("sans-serif", 50).into_font())
+		.margin(15)
+		.x_label_area_size(45)
+		.y_label_area_size(60)
+		.build_cartesian_2d(0f64..1f64, r_mi..r_mx)
+		.unwrap();
+	chart
+		.configure_mesh()
+		.x_desc("Winning Probability")
+		.y_desc("Elo rating")
+		.axis_desc_style(("sans-serif", 25).into_font())
+		.max_light_lines(4)
+		.draw()
+		.unwrap();
+	chart
+		.draw_series(
+			v.into_iter()
+				.map(|p| (p.winning_percentage, p.rating()))
+				.map(|(x, y)| Circle::new((x, y), 5, PURPLE.filled())),
+		)
+		.unwrap();
+
+	root.present().unwrap();
 }
