@@ -15,12 +15,6 @@ impl<T: IPlayer> Default for Ratings<T> {
 }
 
 impl Ratings<Player> {
-	pub fn new(players: Vec<Player>) -> Self { Self::new_with_k(players, K) }
-
-	pub fn new_with_k(players: Vec<Player>, k: f64) -> Self {
-		Self { players, k }
-	}
-
 	pub fn fill(starting_rate: f64, length: usize) -> Self {
 		Self::fill_with_k(starting_rate, length, K)
 	}
@@ -34,6 +28,10 @@ impl Ratings<Player> {
 }
 
 impl<T: IPlayer> Ratings<T> {
+	pub fn new(players: Vec<T>) -> Self { Self::new_with_k(players, K) }
+
+	pub fn new_with_k(players: Vec<T>, k: f64) -> Self { Self { players, k } }
+
 	pub fn r#match(
 		&mut self,
 		a: usize,
