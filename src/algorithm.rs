@@ -22,6 +22,9 @@ pub(crate) fn elo_a(ra: f64, rb: f64, o: Outcome, k: f64) -> f64 {
 
 /// Calculates Elo rating pairs according to given match outcome.
 ///
+/// it assumes K as 32 by default.
+/// If you want to use a different K value, try [`elo_with_k`].
+///
 /// ## Examples
 ///
 /// ```
@@ -36,6 +39,18 @@ pub fn elo(rating_a: f64, rating_b: f64, outcome: Outcome) -> (f64, f64) {
 	elo_with_k(rating_a, rating_b, outcome, K)
 }
 
+/// Calculates Elo rating pairs with given K value.
+///
+/// ## Examples
+///
+/// ```
+/// # use elo_rs::*;
+/// let a = 100.;
+/// let b = 120.;
+/// let (new_a, new_b) = elo_with_k(a, b, Win, 16.);
+/// assert_eq!(new_a, 108.4600090222763);
+/// assert_eq!(new_b, 111.5399909777237);
+/// ```
 pub fn elo_with_k(
 	rating_a: f64,
 	rating_b: f64,
