@@ -54,6 +54,18 @@ impl<T: IPlayer> Ratings<T> {
 		(*a).update(ar_new);
 		(*b).update(br_new);
 	}
+
+	pub unsafe fn match_with_ref(
+		&mut self,
+		a: &mut T,
+		b: &mut T,
+		result: Outcome,
+	) {
+		let (ar, br) = (a.rating(), b.rating());
+		let (ar_new, br_new) = elo_with_k(ar, br, result, self.k);
+		a.update(ar_new);
+		b.update(br_new);
+	}
 }
 
 impl<T> Ratings<T>
