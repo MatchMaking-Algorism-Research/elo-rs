@@ -1,7 +1,7 @@
 pub mod algorithm;
-mod outcome;
-mod player;
-mod ratings;
+pub mod outcome;
+pub mod player;
+pub mod ratings;
 
 pub use algorithm::*;
 pub use outcome::*;
