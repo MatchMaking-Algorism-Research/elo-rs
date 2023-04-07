@@ -18,7 +18,8 @@ impl Player {
 	/// ## Examples:
 	///
 	/// ```
-	/// let player_a = Player::new(123.); 
+	/// # use elo_rs::*;
+	/// let player_a = Player::new(123.);
 	/// ```
 	pub fn new(rating: f64) -> Self { Self(rating) }
 
