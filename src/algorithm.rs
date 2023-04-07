@@ -20,6 +20,18 @@ pub(crate) fn elo_a(ra: f64, rb: f64, o: Outcome, k: f64) -> f64 {
 	ra + delta(o, ex(ra, rb), k)
 }
 
+/// Calculates Elo rating pairs according to given match outcome.
+///
+/// ## Examples
+///
+/// ```
+/// # use elo_rs::*;
+/// let a = 100.;
+/// let b = 150.;
+/// let (new_a, new_b) = elo(a, b, Loss);
+/// assert_eq!(new_a, 86.2868197570682);
+/// assert_eq!(new_b, 163.7131802429318);
+/// ```
 pub fn elo(rating_a: f64, rating_b: f64, outcome: Outcome) -> (f64, f64) {
 	elo_with_k(rating_a, rating_b, outcome, K)
 }
