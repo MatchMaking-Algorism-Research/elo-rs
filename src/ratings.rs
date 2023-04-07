@@ -84,8 +84,8 @@ where T: IPlayer + Clone
 	}
 }
 
-impl From<Ratings<Player>> for Vec<Player> {
-	fn from(value: Ratings<Player>) -> Self { value.players }
+impl<T: IPlayer> From<Ratings<T>> for Vec<T> {
+	fn from(value: Ratings<T>) -> Self { value.players }
 }
 
 impl From<Vec<f64>> for Ratings<Player> {
