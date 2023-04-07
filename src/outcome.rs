@@ -18,17 +18,17 @@ use std::ops::{Mul, Not, Sub};
 /// ```
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Outcome {
-	/// Mean the player won the game
+	/// Represents that the player won the game.
 	///
-	/// has the value representation of 1.
+	/// Has a value representation of `1`.
 	Win,
-	/// Mean the player draw the game
+	/// Represents that the game ended in a draw.
 	///
-	/// has the value representation of 0.5.
+	/// Has a value representation of `0.5`.
 	Draw,
-	/// Mean the player lost the game
+	/// Represents that the player lost the game.
 	///
-	/// has the value representation of 0.
+	/// Has a value representation of `0`.
 	Loss,
 }
 
