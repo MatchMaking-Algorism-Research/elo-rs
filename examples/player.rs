@@ -1,4 +1,4 @@
-use elo_rs::{Loss, Player};
+use elo_rs::{IPlayer, Loss, Player};
 
 fn main() {
 	let mut player = Player::from(123);

@@ -1,7 +1,7 @@
-use elo_rs::{Loss, Ratings};
+use elo_rs::{IPlayer, Loss, Player, Ratings};
 
 fn main() {
-	let mut rating: Ratings = vec![123., 456.].into();
+	let mut rating: Ratings<Player> = vec![123., 456.].into();
 
 	rating.r#match(0, 1, Loss).unwrap();
 
