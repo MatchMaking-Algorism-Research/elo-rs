@@ -4,13 +4,17 @@ mod outcome;
 pub use algorithm::*;
 pub use outcome::*;
 
+pub trait IPlayer {
+	fn rating(&self) -> f64;
+
+	fn update(&mut self, rating: f64);
+}
+
 #[derive(Clone, Copy)]
 pub struct Player(f64);
 
 impl Player {
 	pub fn new(rating: f64) -> Self { Self(rating) }
-
-	pub fn rating(&self) -> f64 { self.0 }
 
 	pub fn update_rating(&mut self, opponent_rating: f64, outcome: Outcome) {
 		self.update_rating_with_k(opponent_rating, outcome, K)
@@ -24,8 +28,12 @@ impl Player {
 	) {
 		self.0 = elo_a(self.0, opponent_rating, outcome, k)
 	}
+}
 
-	fn set_rating(&mut self, rating: f64) { self.0 = rating; }
+impl IPlayer for Player {
+	fn rating(&self) -> f64 { self.0 }
+
+	fn update(&mut self, rating: f64) { self.0 = rating; }
 }
 
 impl From<f64> for Player {
@@ -36,12 +44,12 @@ impl From<i32> for Player {
 	fn from(value: i32) -> Self { Self::new(value as f64) }
 }
 
-pub struct Ratings {
-	players: Vec<Player>,
+pub struct Ratings<T: IPlayer> {
+	players: Vec<T>,
 	k: f64,
 }
 
-impl Default for Ratings {
+impl<T: IPlayer> Default for Ratings<T> {
 	fn default() -> Self {
 		Self {
 			players: vec![],
@@ -50,7 +58,7 @@ impl Default for Ratings {
 	}
 }
 
-impl Ratings {
+impl Ratings<Player> {
 	pub fn new(players: Vec<Player>) -> Self { Self::new_with_k(players, K) }
 
 	pub fn new_with_k(players: Vec<Player>, k: f64) -> Self {
@@ -67,7 +75,9 @@ impl Ratings {
 			k,
 		)
 	}
+}
 
+impl<T: IPlayer> Ratings<T> {
 	pub fn r#match(
 		&mut self,
 		a: usize,
@@ -92,21 +102,21 @@ impl Ratings {
 		result: Outcome,
 	) {
 		let (a, b) = (
-			self.players.get_unchecked_mut(a) as *mut Player,
-			self.players.get_unchecked_mut(b) as *mut Player,
+			self.players.get_unchecked_mut(a) as *mut T,
+			self.players.get_unchecked_mut(b) as *mut T,
 		);
 		let (ar, br) = ((*a).rating(), (*b).rating());
 		let (ar_new, br_new) = elo_with_k(ar, br, result, self.k);
-		(*a).set_rating(ar_new);
-		(*b).set_rating(br_new);
+		(*a).update(ar_new);
+		(*b).update(br_new);
 	}
 }
 
-impl From<Ratings> for Vec<Player> {
-	fn from(value: Ratings) -> Self { value.players }
+impl From<Ratings<Player>> for Vec<Player> {
+	fn from(value: Ratings<Player>) -> Self { value.players }
 }
 
-impl From<Vec<f64>> for Ratings {
+impl From<Vec<f64>> for Ratings<Player> {
 	fn from(value: Vec<f64>) -> Self {
 		Self::new(
 			value
