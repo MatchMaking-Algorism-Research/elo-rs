@@ -20,6 +20,8 @@ impl<T: IPlayer> Ratings<T> {
 
 	pub fn new_with_k(players: Vec<T>, k: f64) -> Self { Self { players, k } }
 
+	pub fn as_slice(&self) -> &[T] { &self.players }
+
 	pub fn r#match(
 		&mut self,
 		a: usize,
