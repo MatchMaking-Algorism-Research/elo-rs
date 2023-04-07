@@ -1,3 +1,4 @@
+//! Rust implementation of Elo rating
 pub mod algorithm;
 pub mod outcome;
 pub mod player;
