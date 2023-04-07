@@ -14,19 +14,6 @@ impl<T: IPlayer> Default for Ratings<T> {
 	}
 }
 
-impl Ratings<Player> {
-	pub fn fill(starting_rate: f64, length: usize) -> Self {
-		Self::fill_with_k(starting_rate, length, K)
-	}
-
-	pub fn fill_with_k(starting_rate: f64, length: usize, k: f64) -> Self {
-		Self::new_with_k(
-			vec![Player::new(starting_rate); length],
-			k,
-		)
-	}
-}
-
 impl<T: IPlayer> Ratings<T> {
 	pub fn new(players: Vec<T>) -> Self { Self::new_with_k(players, K) }
 
@@ -63,6 +50,18 @@ impl<T: IPlayer> Ratings<T> {
 		let (ar_new, br_new) = elo_with_k(ar, br, result, self.k);
 		(*a).update(ar_new);
 		(*b).update(br_new);
+	}
+}
+
+impl<T> Ratings<T>
+where T: IPlayer + Clone
+{
+	pub fn fill(starting_rate: T, length: usize) -> Self {
+		Self::fill_with_k(starting_rate, length, K)
+	}
+
+	pub fn fill_with_k(starting_rate: T, length: usize, k: f64) -> Self {
+		Self::new_with_k(vec![starting_rate; length], k)
 	}
 }
 
