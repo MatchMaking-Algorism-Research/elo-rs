@@ -1,10 +1,34 @@
 //! Result of each game.
 use std::ops::{Mul, Not, Sub};
 
+/// Represents the outcome of a game.
+///
+/// ## Note
+///
+/// In most cases, the result is interpreted as the 'left hand side'
+/// player getting the outcome. See the example below:
+///
+/// ```
+/// # use elo_rs::*;
+/// let mut ratings = Ratings::from(vec![10., 20.]);
+///
+/// ratings.r#match(0, 1, Win) // player 0 won, player 1 lost the game.
+/// ratings.r#match(0, 1, Draw) // both players drew the game.
+/// ratings.r#match(0, 1, Loss) // player 0 lost, player 1 won the game.
+/// ```
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum Outcome {
+	/// Mean the player won the game
+	///
+	/// has the value representation of 1.
 	Win,
+	/// Mean the player draw the game
+	///
+	/// has the value representation of 0.5.
 	Draw,
+	/// Mean the player lost the game
+	///
+	/// has the value representation of 0.
 	Loss,
 }
 
