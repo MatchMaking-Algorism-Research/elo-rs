@@ -1,3 +1,4 @@
+//! Vector of ratings of all players
 use crate::{elo_with_k, IPlayer, Outcome, Player, K};
 
 pub struct Ratings<T: IPlayer> {
